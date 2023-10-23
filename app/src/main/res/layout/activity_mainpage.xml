@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentopen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    tools:context=".mainpage">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="628dp">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="151dp">
+
+        <LinearLayout
+            android:id="@+id/logo"
+            android:layout_width="264dp"
+            android:layout_height="340dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="268dp"
+                android:layout_height="259dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/smkn1_jakarta" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:text="SMKN 1 JAKARTA"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Exam Browser"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/scanningframe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <com.budiyev.android.codescanner.CodeScannerView
+                android:id="@+id/scanner_view"
+                android:layout_width="310dp"
+                android:layout_height="310dp"
+                android:layout_gravity="center"
+                android:focusable="auto"
+                android:outlineSpotShadowColor="@color/white"
+                app:autoFocusButtonColor="@color/white"
+                app:autoFocusButtonVisible="false"
+                app:flashButtonColor="@color/white"
+                app:flashButtonVisible="true"
+                app:frameAspectRatioHeight="1"
+                app:frameAspectRatioWidth="1"
+                app:frameColor="@color/white"
+                app:frameCornersRadius="10dp"
+                app:frameCornersSize="70dp"
+                app:frameSize="0.75"
+                app:frameThickness="3dp"
+                app:maskColor="#32020202">
+
+            </com.budiyev.android.codescanner.CodeScannerView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/inputurl"
+                android:layout_width="251dp"
+                android:layout_height="49dp"
+                android:backgroundTint="#000000"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="Masukan IP/URL"
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textColorHint="#F0737373"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/submitbutton"
+                android:layout_width="69dp"
+                android:layout_height="54dp"
+                android:backgroundTint="#0098FE"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:icon="@drawable/baseline_navigate_next_24"
+                app:iconGravity="textEnd"
+                app:iconSize="45dp"
+                app:iconTint="#FFFFFF"
+                app:strokeColor="#000000" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="98dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Atau"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/qrbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#0097FD"
+            android:text="Scan QR"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            app:icon="@drawable/baseline_qr_code_scanner"
+            app:iconGravity="textEnd"
+            app:iconSize="30dp"
+            app:iconTint="#FFFFFF"
+            app:strokeColor="#000000" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
