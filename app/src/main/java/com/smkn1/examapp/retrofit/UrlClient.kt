@@ -14,7 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object UrlClient {
-    private val baseUrl = "http://203.77.246.219:8000/api/"
+    private val baseUrl = "http://10.211.1.10:8000/api/"
+    private val baseUrlOffline = "http://203.77.246.219:8000/api/"
 //    private val baseUrl = "https://radjamahesaw.my.id/"
 
     fun getInstance(): Retrofit {
@@ -29,6 +30,12 @@ object UrlClient {
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(mOkHttpClient)
+            .build()
+
+        val retrofitOffline: Retrofit = Retrofit.Builder()
+            .baseUrl(baseUrlOffline)
             .addConverterFactory(GsonConverterFactory.create())
             .client(mOkHttpClient)
             .build()

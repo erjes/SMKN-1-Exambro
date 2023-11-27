@@ -108,7 +108,8 @@
                 android:inputType="textPersonName"
                 android:textColor="#000000"
                 android:textColorHint="#F0737373"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/submitbutton"
@@ -118,6 +119,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:icon="@drawable/baseline_navigate_next_24"
                 app:iconGravity="textEnd"
                 app:iconSize="45dp"
@@ -133,7 +135,8 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:text="Atau"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/qrbutton"
@@ -141,10 +144,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#0097FD"
-            android:text="Scan QR"
+            android:text="Mulai Ujian"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
-            app:icon="@drawable/baseline_qr_code_scanner"
+            app:icon="@drawable/baseline_navigate_next_24"
             app:iconGravity="textEnd"
             app:iconSize="30dp"
             app:iconTint="#FFFFFF"

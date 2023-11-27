@@ -20,10 +20,10 @@ class exampage: Fragment() {
         formview = view.findViewById(R.id.webview)
 
         val bundle = arguments
-        val URL = bundle!!.getString("URL")
+        val url = bundle!!.getString("URL")
 
         formview.webViewClient = WebViewClient()
-            formview.loadUrl(URL.toString())
+            formview.loadUrl(url.toString())
             formview.settings.javaScriptEnabled = true
             formview.settings.loadWithOverviewMode = true
             formview.settings.useWideViewPort = true
