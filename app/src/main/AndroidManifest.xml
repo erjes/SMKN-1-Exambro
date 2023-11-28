@@ -41,7 +41,6 @@
             android:name=".mainpage"
             android:exported="true"
             android:label="@string/app_name"
-            android:resizeableActivity="false"
             android:theme="@style/Theme.Examapp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

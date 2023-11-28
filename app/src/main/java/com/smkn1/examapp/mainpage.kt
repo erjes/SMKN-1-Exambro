@@ -1,23 +1,16 @@
 package com.smkn1.examapp
 
-import android.Manifest
 import android.app.ActivityManager
-import android.app.KeyguardManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.InputType
 import android.util.Patterns
 import android.view.MotionEvent
-import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.budiyev.android.codescanner.*
@@ -42,16 +35,13 @@ class mainpage : AppCompatActivity() {
     private val mFragment = exampage()
     private lateinit var password: String
     private var urlExam = "http://192.168.0.11:8081"
+//    private var urlExam = "https://www.instagram.com/"
     private lateinit var submitbtn: Button
-    private val OVERLAY_PERMISSION_REQUEST_CODE = 123
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_mainpage)
-
-        requestPermissions()
 
         val notificationManager = applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
@@ -75,21 +65,14 @@ class mainpage : AppCompatActivity() {
         codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
-//        submitbtn.isEnabled = false
+        password = "offline"
         getPassword()
 
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
                 val url = it.toString()
                 if(Patterns.WEB_URL.matcher(url).matches()){
-//                    val mBundle = Bundle()
-//                    mBundle.putString("URL",url)
-                    if (checkOverlay()) {
-                        Toast.makeText(applicationContext, "Izinkan Fitur Overlay", Toast.LENGTH_LONG).show()
-                        requestPermissions()
-                    }else{
                         mFragmentTransaction.add(R.id.fragmentopen, mFragment).commit()
-                    }
                 }else{
                     Toast.makeText(applicationContext, "Url/IP tidak valid", Toast.LENGTH_LONG).show()
                 }
@@ -103,20 +86,7 @@ class mainpage : AppCompatActivity() {
         }
 
         qrbtn.setOnClickListener {
-//            if (checkapperaontop()){
-//                requestPermissions()
-//            }
-//            if (!Settings.canDrawOverlays(this)){
-//                requestPermissions()
-//            }
-//            codeScanner.startPreview()
-//            scanningframe.visibility = View.VISIBLE
-//            logo.visibility = View.GONE
-            if (checkOverlay()) {
-                val intentOverlay = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-                Toast.makeText(applicationContext, "Izinkan Fitur Overlay", Toast.LENGTH_LONG).show()
-                startActivityForResult(intentOverlay, OVERLAY_PERMISSION_REQUEST_CODE)
-            }else{
+
                 isUrlAccessible(urlExam) { isAccessible ->
                     if (isAccessible) {
                         // The URL is accessible, open it in WebView
@@ -127,102 +97,16 @@ class mainpage : AppCompatActivity() {
                     } else {
                         Toast.makeText(applicationContext, "Gagal Mengakses IP Ujian", Toast.LENGTH_LONG).show()
                     }
-                }
             }
         }
 
 
         submitbtn.setOnClickListener {
-//            if (!Settings.canDrawOverlays(this)){
-//                requestPermissions()
-//            }
-//            if (urlinput.text.toString().isEmpty()){
-//                Toast.makeText(applicationContext, "Url/IP Kosong", Toast.LENGTH_LONG).show()
-//            }else{
-//                val url = urlinput.text.toString()
-//                if(Patterns.WEB_URL.matcher(url).matches()){
-//                    val mBundle = Bundle()
-//                    mBundle.putString("URL",url)
-//                    mFragment.arguments = mBundle
-//                    if (checkOverlay()) {
-//                        Toast.makeText(applicationContext, "Izinkan Fitur Overlay", Toast.LENGTH_LONG).show()
-//                        requestPermissions()
-//                    }else{
-//                        mFragmentTransaction.add(R.id.fragmentopen, mFragment).commit()
-//                    }
-//                }else{
-//                    Toast.makeText(applicationContext, "Url/IP tidak valid", Toast.LENGTH_LONG).show()
-//                }
-//            }
         }
 
     }
 
-//private fun requestOverlay(){}
 
-    private fun requestPermissions() {
-        if (checkOverlay()) {
-            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE)
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
-        }
-    }
-
-    private fun checkOverlay(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            !Settings.canDrawOverlays(this)
-        } else if (Build.VERSION.SDK_INT in Build.VERSION_CODES.M..Build.VERSION_CODES.Q) {
-            !Settings.canDrawOverlays(this)
-        } else {
-            true
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
-            // Check if the overlay permission was granted after the user interaction.
-            if (checkOverlay()) {
-                Toast.makeText(applicationContext, "Izinkan Fitur Overlay", Toast.LENGTH_LONG).show()
-            } else {
-                // Permission granted, you can proceed with other tasks.
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
-            }
-        }
-    }
-
-//private fun requestPermissions(){
-////    val check :Boolean = ContextCompat.checkSelfPermission(this, Settings.ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_GRANTED
-//    if (Build.VERSION.SDK_INT >= 30 ) {
-//        if (!Settings.canDrawOverlays(this)){
-//            startActivity(Intent(ACTION_MANAGE_OVERLAY_PERMISSION))
-//        }
-//    }else if(Build.VERSION.SDK_INT in 24..29 ){
-//        if (ContextCompat.checkSelfPermission(this, ACTION_MANAGE_OVERLAY_PERMISSION) != PackageManager.PERMISSION_GRANTED){
-////        if (ContextCompat.checkSelfPermission(this, ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_DENIED){
-//            startActivity(Intent(ACTION_MANAGE_OVERLAY_PERMISSION))
-//        }
-//    }
-//    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
-//    }
-//
-//
-//    private fun checkOverlay(): Boolean {
-//        if (Build.VERSION.SDK_INT >= 30) {
-//            return !Settings.canDrawOverlays(this)
-//        } else if (Build.VERSION.SDK_INT in 24..29) {
-////            return ContextCompat.checkSelfPermission(this, ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_DENIED
-//            return (ContextCompat.checkSelfPermission(this, ACTION_MANAGE_OVERLAY_PERMISSION) != PackageManager.PERMISSION_GRANTED)
-//        }
-//        return true
-//    }
-
-//
-//    private fun checkcamera(): Boolean {
-//        return ContextCompat.checkSelfPermission(this, Settings.ACTION_MANAGE_OVERLAY_PERMISSION) ==
-//                PackageManager.PERMISSION_DENIED
-//    }
     private fun showAlertPause() {
     val builder = AlertDialog.Builder(this)
     val inputpassword = EditText(this)
@@ -236,50 +120,77 @@ class mainpage : AppCompatActivity() {
     builder.setView(layoutName)
 
     builder.setPositiveButton("Yes"){ _, _ ->
-        val pw = inputpassword.text.toString()
-        if (pw == "exitex4m"||pw == password){
             Toast.makeText(this,"Berhasil", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this,"Password Salah", Toast.LENGTH_SHORT).show()
-            showAlertPause()
-        }
 
     }
     val alertDialog: AlertDialog = builder.create()
     alertDialog.setCancelable(false)
     alertDialog.show()
     }
+
+    private fun showAlertLog() {
+        val builder = AlertDialog.Builder(this)
+        val inputpassword = EditText(this)
+        inputpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        inputpassword.hint = "Password"
+        if (password.isNotEmpty()){inputpassword.setText(password)}
+        builder.setTitle("Masukan Password")
+        builder.setView(inputpassword)
+        val layoutName = LinearLayout(this)
+        layoutName.orientation = LinearLayout.VERTICAL
+        layoutName.addView(inputpassword)
+        builder.setView(layoutName)
+
+        builder.setPositiveButton("Yes"){ _, _ ->
+            val pw = inputpassword.text.toString()
+            if (pw == "*king*" || pw == password+"king"){
+                Toast.makeText(this,"Berhasil", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"Password Salah", Toast.LENGTH_SHORT).show()
+                showAlertLog()
+            }
+
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
+    private fun showAlertBack(){
+        val builder = AlertDialog.Builder(this)
+        val inputpassword = EditText(this)
+        inputpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        inputpassword.hint = "Password"
+        builder.setTitle("Masukan Password untuk keluar")
+        builder.setView(inputpassword)
+        val layoutName = LinearLayout(this)
+        layoutName.orientation = LinearLayout.VERTICAL
+        layoutName.addView(inputpassword)
+        builder.setView(layoutName)
+
+        builder.setPositiveButton("Yes"){ _, _ ->
+            val pw = inputpassword.text.toString()
+            if (pw == "*king*"||pw == password){
+                supportFragmentManager.beginTransaction().remove(mFragment).commit()
+                val intent = Intent(this, mainpage::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                Toast.makeText(this,"Password Salah", Toast.LENGTH_SHORT).show()
+            }
+        }
+        builder.setNeutralButton("Cancel"){ _, _ ->
+            Toast.makeText(this,"Batal", Toast.LENGTH_SHORT).show()
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (mFragment.isAdded){
-            val builder = AlertDialog.Builder(this)
-            val inputpassword = EditText(this)
-            inputpassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            inputpassword.hint = "Password"
-            builder.setTitle("Masukan Password untuk keluar")
-            builder.setView(inputpassword)
-            val layoutName = LinearLayout(this)
-            layoutName.orientation = LinearLayout.VERTICAL
-            layoutName.addView(inputpassword)
-            builder.setView(layoutName)
-
-            builder.setPositiveButton("Yes"){ _, _ ->
-                val pw = inputpassword.text.toString()
-                if (pw == "exitex4m"||pw == password){
-                    supportFragmentManager.beginTransaction().remove(mFragment).commit()
-                    val intent = Intent(this, mainpage::class.java)
-                    startActivity(intent)
-                    finish()
-                }else{
-                    Toast.makeText(this,"Password Salah", Toast.LENGTH_SHORT).show()
-                }
-            }
-            builder.setNeutralButton("Cancel"){ _, _ ->
-                Toast.makeText(this,"Batal", Toast.LENGTH_SHORT).show()
-            }
-            val alertDialog: AlertDialog = builder.create()
-            alertDialog.setCancelable(false)
-            alertDialog.show()
+            showAlertBack()
         }else{
             finish()
         }
@@ -288,16 +199,16 @@ class mainpage : AppCompatActivity() {
 
     override fun onPause() {
         codeScanner.releaseResources()
-        if (mFragment.isAdded){
-            try{
+        try{
+            if (mFragment.isAdded) {
                 if (isApplicationSentToBackground(this)){
                     showAlertPause()
                 }
-                bringApplicationToFront()
-            }catch(e: Exception){
-              Toast.makeText(this,e.toString(), Toast.LENGTH_SHORT).show()
-          }
+            }
+        }catch(e: Exception){
+            Toast.makeText(this,e.toString(), Toast.LENGTH_SHORT).show()
         }
+
         super.onPause()
     }
 
@@ -337,53 +248,6 @@ class mainpage : AppCompatActivity() {
         return super.onTouchEvent(motionEvent)
     }
 
-    private fun bringApplicationToFront() {
-        val myKeyManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && myKeyManager.isKeyguardLocked) {
-            return
-        }
-
-        val bringToForegroundIntent = Intent(this, mainpage::class.java)
-        bringToForegroundIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        startActivity(bringToForegroundIntent)
-    }
-
-//    private fun bringApplicationToFront() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-//            if (keyguardManager.isDeviceLocked) {
-//                // Device is locked, do not bring to foreground
-//                return
-//            }
-//        }
-//
-//        val bringToForegroundIntent = Intent(this, mainpage::class.java)
-//        bringToForegroundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        startActivity(bringToForegroundIntent)
-//    }
-
-
-//    override fun onTouchEvent(motionEvent: MotionEvent?): Boolean {
-//        if (mFragment.isAdded){
-//            try{
-//                hideNav(true)
-//                return super.onTouchEvent(motionEvent)
-//            }catch(e: Exception){
-//                Toast.makeText(this,e.toString(), Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        return super.onTouchEvent(motionEvent)
-//    }
-//
-//    private fun bringApplicationToFront() {
-//        val myKeyManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-//        if (myKeyManager.isKeyguardLocked) {
-//            return
-//        }
-//            val bringToForegroundIntent = Intent(this, mainpage::class.java)
-//            bringToForegroundIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-//            startActivity(bringToForegroundIntent)
-//    }
 
     private fun getPassword(){
             val retrofit = UrlClient.getInstance()
@@ -399,6 +263,7 @@ class mainpage : AppCompatActivity() {
                                 for (pw in exitPassword) {
                                     // Access JSON values using the properties of the Post object
                                     password = pw.password
+                                    showAlertLog()
                                 }
                             }
                             Toast.makeText(this@mainpage, "Berhasil Terhubung Ke Server", Toast.LENGTH_SHORT).show()
@@ -436,10 +301,10 @@ class mainpage : AppCompatActivity() {
         }
     }
 
-    fun isApplicationSentToBackground(context: Context): Boolean {
+    private fun isApplicationSentToBackground(context: Context): Boolean {
         val am = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
         val tasks = am.getRunningTasks(1)
-        if (!tasks.isEmpty()) {
+        if (tasks.isNotEmpty()) {
             val topActivity = tasks[0].topActivity
             if (topActivity!!.packageName != context.packageName) {
                 return true
@@ -447,6 +312,8 @@ class mainpage : AppCompatActivity() {
         }
         return false
     }
+
+
 
 }
 
