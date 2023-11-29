@@ -24,7 +24,6 @@ import com.budiyev.android.codescanner.*
 import com.smkn1.examapp.retrofit.ApiInterface
 import com.smkn1.examapp.retrofit.ResponseData
 import com.smkn1.examapp.retrofit.UrlClient
-import exampage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,7 +40,9 @@ class mainpage : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private val mFragment = exampage()
     private lateinit var password: String
-    private var urlExam = "http://192.168.0.11:8081"
+//    private var urlExam = "http://192.168.0.11:8081"
+    private var urlExam = "http://203.77.246.222:8081"
+//    private var urlExam = "https://docs.google.com/forms/d/e/1FAIpQLSenwSMLoeVe-o_K3UkP7pKq8PAQgGcZm3x8KR3hfC7MrrOJAA/viewform"
     private lateinit var submitbtn: Button
     private val OVERLAY_PERMISSION_REQUEST_CODE = 123
 
@@ -439,7 +440,7 @@ class mainpage : AppCompatActivity() {
     fun isApplicationSentToBackground(context: Context): Boolean {
         val am = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
         val tasks = am.getRunningTasks(1)
-        if (!tasks.isEmpty()) {
+        if (tasks.isNotEmpty()) {
             val topActivity = tasks[0].topActivity
             if (topActivity!!.packageName != context.packageName) {
                 return true
