@@ -17,7 +17,6 @@ import com.budiyev.android.codescanner.*
 import com.smkn1.examapp.retrofit.ApiInterface
 import com.smkn1.examapp.retrofit.ResponseData
 import com.smkn1.examapp.retrofit.UrlClient
-import exampage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -34,8 +33,9 @@ class mainpage : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private val mFragment = exampage()
     private lateinit var password: String
-    private var urlExam = "http://192.168.0.11:8081"
-//    private var urlExam = "https://www.instagram.com/"
+//    private var urlExam = "http://192.168.0.11:8081"
+    private var urlExam = "https://www.instagram.com/"
+//  private var urlExam = "http://203.77.246.222:8081"
     private lateinit var submitbtn: Button
 
 
