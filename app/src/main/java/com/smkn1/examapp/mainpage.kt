@@ -41,8 +41,9 @@ class mainpage : AppCompatActivity() {
     private val mFragment = exampage()
     private lateinit var password: String
 //    private var urlExam = "http://192.168.0.11:8081"
-    private var urlExam = "http://203.77.246.222:8081"
+//    private var urlExam = "http://203.77.246.222:8081"
 //    private var urlExam = "https://docs.google.com/forms/d/e/1FAIpQLSenwSMLoeVe-o_K3UkP7pKq8PAQgGcZm3x8KR3hfC7MrrOJAA/viewform"
+    private var urlExam = "http://192.168.0.11:9088"
     private lateinit var submitbtn: Button
     private val OVERLAY_PERMISSION_REQUEST_CODE = 123
 
